@@ -4,11 +4,18 @@ import Widget
 import sdl/[Sdl,Event]
 import Vector
 
-include font/font
+include ./font/font
 renderFont: extern func(...)
+getFont: extern func(...)  -> Pointer
+ftglGetFontBBox: extern func(...)
 
 InputLine: class extends Widget {
-	buffer:= ""
+    
+    caretStart = 0, caretEnd = 0 : Int
+    
+    fakeBuffer := "88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888"
+	buffer := ""
+    
 	init: func ~inputLine(=parent) {
 		super()
 		pos = parent cpos
@@ -28,8 +35,18 @@ InputLine: class extends Widget {
 	bufferDraw: func {
 		glPushMatrix()
 		glColor3ub(0,0,0)
-		glTranslated(0,5,0)
-		renderFont(1,12,0.2,1,buffer)
+		glTranslated(0, 5, 0)
+		renderFont(1, 12, 0.2, 1, buffer)
+        
+        // draw caret
+        if(caretStart > 0) {
+            bbox : Float[6]
+            ftglGetFontBBox (getFont(), fakeBuffer, caretStart, bbox)
+            textWidth : Float = (bbox[3] / 5)
+            glTranslated(textWidth - 2, 0, 0)
+        }
+        renderFont(1, 12, 0.2, 1, "|")
+        
 		glPopMatrix()
 	}
 	
@@ -42,9 +59,39 @@ InputLine: class extends Widget {
 						
 					}
 				}*/
-				if(e key keysym sym >= SDLK_LEFTBRACKET && e key keysym sym <= SDLK_z && !(state & KMOD_LCTRL || state & KMOD_RCTRL)) {
-					buffer = buffer + e key keysym sym as Char 
-				}
+                ch := e key keysym sym as Char
+                // haha c'est tout moche.
+				if((ch >= SDLK_SPACE && ch <= SDLK_z && e key keysym sym != SDLK_LSHIFT && e key keysym sym != SDLK_RSHIFT) && !((state & KMOD_LCTRL) || (state & KMOD_RCTRL))) {
+                    if(state & KMOD_SHIFT) {
+                        ch -= (97 - 65)
+                    }
+                    if(caretStart == buffer length()) {
+                        buffer = buffer + ch
+                    } else {
+                        buffer = buffer substring(0, caretStart) + ch + buffer substring(caretStart, buffer length())
+                    }
+                    caretStart += 1
+                    dirty = true
+				} else if(ch == SDLK_BACKSPACE && caretStart > 0) {
+                    buffer = buffer substring(0, caretStart - 1) + buffer substring(caretStart, buffer length())
+                    caretStart -= 1
+                    dirty = true
+                } else if(ch == SDLK_DELETE && caretStart < buffer length()) {
+                    buffer = buffer substring(0, caretStart) + buffer substring(caretStart + 1, buffer length())
+                    dirty = true
+                } else if(e key keysym sym == SDLK_RIGHT && caretStart < buffer length() ) {
+                    caretStart += 1
+                    dirty = true
+                } else if(e key keysym sym == SDLK_LEFT && caretStart > 0) {
+                    caretStart -= 1
+                    dirty = true
+                } else if(e key keysym sym == SDLK_HOME) {
+                    caretStart = 0
+                    dirty = true
+                } else if(e key keysym sym == SDLK_END) {
+                    caretStart = buffer length()
+                    dirty = true
+                }
 			}
 		}
 	}

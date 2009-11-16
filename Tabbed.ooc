@@ -17,7 +17,7 @@ Tabbed: class extends Widget {
 	onTabC := Vector3b new(255,255,255)
 	offTabC := Vector3b new(128,128,128)
 	focus := -1
-	dialog := OpenFileDialog new()
+	dialog := OpenFileDialog new(this)
 	
 	init: func ~tabbed (x,y: Int){
 		super()
@@ -34,6 +34,9 @@ Tabbed: class extends Widget {
 		for(tab in tabs) {
 			bbox : Float[6]
 			ftglGetFontBBox (getFont(), tab name, tab name length(), bbox)
+            // bbox[3] = font width
+            // / 5 because we scale 5x after
+            // 30px right margin for the icon to come.
 			tabWidth = bbox[3]/5 + 30
 			if(ntab == focus) {
 				glColor3ub(onTabC x,onTabC y,onTabC z)
@@ -43,12 +46,12 @@ Tabbed: class extends Widget {
 			
 			glBegin(GL_QUADS)
 			glVertex2i(0,0)
-			glVertex2i(tabWidth,0)
-			glVertex2i(tabWidth,tabHeight)
-			glVertex2i(0,tabHeight)
+			glVertex2i(tabWidth, 0)
+			glVertex2i(tabWidth, tabHeight)
+			glVertex2i(0, tabHeight)
 			glEnd()
-			glColor3ub(0,0,0)
-			renderFont(0,16,0.2,1,tab name)
+			glColor3ub(0, 0, 0)
+			renderFont(0, 17, 0.2, 1, tab name)
 			
 			glTranslated(tabWidth,0,0)
 			ntab += 1

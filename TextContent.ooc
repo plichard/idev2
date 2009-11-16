@@ -181,7 +181,7 @@ TextContent: class extends Widget {
 		i := 0
 		line : Char[128]
 		c : Char = filereader read()
-		while(c != '\n') {
+		while(c != '\n' && filereader hasNext()) {
 			line[i] = c
 			i += 1
 			c = filereader read()

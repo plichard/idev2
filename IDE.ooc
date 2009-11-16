@@ -15,7 +15,7 @@ initFont: extern func(...)
 
 IDE: class {
 	
-	window := RenderWindow new(1280,800,32,false)
+	window := RenderWindow new(1680, 1050, 32, false)
 	ui := UI new()
 	running := false
 	

@@ -1,17 +1,22 @@
 use glew,sdl
 import glew,sdl/[Sdl,Event]
+import io/File
 import Vector
 import structs/LinkedList
 import Widget
 import InputLine
+import Tabbed
+import TextContent
 
 OpenFileDialog: class extends Widget {
+    
+    tabbed : Tabbed
 	textField : InputLine
-	init: func ~openFileDialog {
+	init: func ~openFileDialog (=tabbed) {
 		super()
-		pos = Vector2i new(200,200)
-		size = Vector2i new(400,40)
-		cpos = Vector2i new(5,5)
+		pos = Vector2i new(200, 200)
+		size = Vector2i new(400, 35)
+		cpos = Vector2i new(5, 5)
 		csize = Vector2i new(size x - 10, size y - 10)
 		textField = InputLine new(this)
 		hideType = NE_HIDE
@@ -30,7 +35,16 @@ OpenFileDialog: class extends Widget {
 						}
 					}
 					case SDLK_RETURN => {
-						hide()
+                        hide()
+                        f := File new(textField buffer)
+                        if(f exists()) {
+                            text := TextContent new(true)
+                            text reload(textField buffer)
+                            text show()
+                            tabbed add(text)
+                        } else {
+                            printf("%s doesn't exist! Abandon..\n", textField buffer)
+                        }
 						dirty = true
 					}
 				}
