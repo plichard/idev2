@@ -24,7 +24,7 @@ Tabbed: class extends Widget {
 		super()
 		size = Vector2i new(x,y)
 		csize = Vector2i new(x,y - tabHeight)
-		printf("Tabbed[%p] has a csize of: %d,%d \n",this,csize x, csize y)
+		//printf("Tabbed[%p] has a csize of: %d,%d \n",this,csize x, csize y)
 		dialog _show = false
 	}
 	
@@ -130,7 +130,9 @@ Tabbed: class extends Widget {
 					}
 				}
 			}
-            tabs get(focus) handleEvent(e)
+			if(focus >= 0) {
+				tabs get(focus) handleEvent(e)
+			}
 		}
 		dialog handleEvent(e)
 		//printf("dialog show: %d\n",dialog _show)

@@ -3,7 +3,6 @@ use sdl,glew,glu
 import glu/Glu
 import glew
 import sdl/Event,sdl/Sdl
-usleep: extern func(...)
 import UI
 import TextContent
 import Tabbed
@@ -12,6 +11,7 @@ import Widget
 include ./font/font
 
 initFont: extern func(...)
+usleep: extern func(...)
 
 IDE: class {
 	
@@ -25,7 +25,6 @@ IDE: class {
 		
 		tabbed := Tabbed new(window width,window height)
 		tabbed show()
-		tabbed newTextTab()
 		ui add(tabbed as Widget)
 		mainLoop()
 	}
@@ -37,12 +36,22 @@ IDE: class {
 		
 	mainLoop: func {
 		running = true
+		lastTime := SDL getTicks()
+		currentTime := SDL getTicks()
 		while(running){
-			handleEvent()
-			if(ui) {
-				ui render()
+			currentTime = SDL getTicks()
+			if (currentTime - lastTime > 15)
+			{
+				handleEvent()
+				ui render()		
+				lastTime = currentTime
 			}
-			usleep(15000)
+			else 
+			{
+				SDL delay(15 - (currentTime - lastTime))
+			}
+
+			
 		}
 		quit()
 	}

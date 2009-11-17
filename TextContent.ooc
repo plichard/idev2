@@ -7,12 +7,14 @@ import io/FileReader
 include ./font/font
 
 initFont: extern func(...)
+getFont: extern func(...) -> Pointer
 renderFont: extern func(...)
+ftglGetFontBBox: extern func(...) -> Pointer
 
 TextContent: class extends Widget {
 	
 	lines := LinkedList<String> new()	//contains all lines
-	cachedLines := LinkedList<GLuint> new()
+	cachedLines := LinkedList<String> new()
 	nline := 0				//variable use for loading and so...
 	topLine := 0 			//index of the first visible line
 	bottomLine := 0
@@ -20,6 +22,7 @@ TextContent: class extends Widget {
 	currentLine := 0		//index of the line containing the cursor, so we can highlight it
 	numbersWidth := 0
 	lineSpacing := 17
+	fontWidth := 0.0
 	file := "Tabbed.ooc"	
 	
 	
@@ -27,10 +30,16 @@ TextContent: class extends Widget {
 	
 	init: func ~textContent (=fill) {
 		super()
+		bbox : Float[6]
+		ftglGetFontBBox (getFont(), "8", 1, bbox)
+		fontWidth = bbox[3]/5
 	}
 	
 	init: func ~textParent (=fill,=parent) {
 		super()
+		bbox : Float[6]
+		ftglGetFontBBox (getFont(), "8", 1, bbox)
+		fontWidth = bbox[3]/5
 	}
 	
 	
@@ -41,7 +50,7 @@ TextContent: class extends Widget {
 			}
 		}
 		
-		nline = 0
+		
 		numbersWidth = log10(lines size()) as Int + 1
 		bgDraw()
 		drawText()
@@ -53,27 +62,42 @@ TextContent: class extends Widget {
 		glTranslated(numbersWidth * 10,0,0)
 		visibleLines = (size y / lineSpacing) as Int + 1
 		bottomLine = topLine + visibleLines
+		if(bottomLine > lines lastIndex())
+			bottomLine = lines lastIndex()
 		iter := lines iterator()
 		i := 0
+		//printf("we got %d visible lines\n",bottomLine - topLine)
+		//printf("topline: %d\n",topLine)
+		//printf("bottomline: %d\n",bottomLine)
+		//printf("fontwidth: %d\n",fontWidth)
+		//printf("")
+		character : Char[2]
+		character[1] = '\0'
 		for(i in 0..topLine) { iter next() }
+		i = topLine
+		nline = topLine
 		while (iter hasNext() && i < bottomLine) {
-			i += 1
 			line := iter next()
+			//printf("drawing line: %s\n",line)
 			if(nline == currentLine) {
 				highDraw()
 			}
-			rline := ""
-			for(i in 0..line length()) {
-				if(line[i] == '\t') {
-					rline = rline + "    "
+			glColor3ub(0,0,0)
+			glPushMatrix()
+			for(i2 in 0..line length()) {
+				if(line[i2] == '\t') {
+					renderFont(4,12,0.2,1,"    ")
+					glTranslated(fontWidth*4,0,0)
 				} else {
-					rline = rline + line[i]
+					character[0] = line[i2]
+					renderFont(4,12,0.2,1,character)
+					glTranslated(fontWidth,0,0)
 				}
 			}
-			glColor3ub(0,0,0)
-			renderFont(4,12, 0.2,1,rline)
+			glPopMatrix()
 			glTranslated(0,lineSpacing,0)
 			nline += 1
+			i+=1
 		}
 		glPopMatrix()
 	}
@@ -89,7 +113,7 @@ TextContent: class extends Widget {
 		glVertex2i(0,lines size() * lineSpacing + 10)
 		glEnd()
 		glColor3ub(0,0,64)
-		for(i in 0..lines size()) {
+		for(i in topLine..bottomLine) {
 			number: Char[4]
 			sprintf(number,"%d",i)
 			renderFont(1,12,0.2,1,number)
@@ -99,22 +123,31 @@ TextContent: class extends Widget {
 	}
 	
 	cacheLines: func() {
-		i := 0
+		cachedLines clear()
 		for(line in lines) {
-			rline := ""
-			for(i in 0..line length()) {
-				if(line[i] == '\t') {
-					rline = rline + "    "
+			lineSize := 0
+			for(n := 0;n<line length();n += 1) {
+				if(line[n] == '\t') {
+					lineSize += 4
 				} else {
-					rline = rline + line[i]
+					lineSize += 1
 				}
 			}
-			dlist := glGenLists(1)
-			cachedLines add(dlist)
-			glNewList(dlist, GL_COMPILE)
-				renderFont(16,12,0.2,1,rline)
-			glEndList()
-			i += 1
+			rline := String new(lineSize)
+			ri := 0
+			for(i in 0..lineSize) {
+				if(line[i] == '\t') {
+					for(n in 0..4) {
+						rline[ri+n] = ' '
+					}
+					ri += 4
+				} else {
+					rline[ri] = line[i]
+					ri += 1
+				}
+			}
+			rline[lineSize - 1] = '\0'
+			cachedLines add(rline)	
 		}
 	}
 	
@@ -183,6 +216,16 @@ TextContent: class extends Widget {
 						//printf("currentLine: %d\n",currentLine)
 						dirty = true
 					}
+				}
+			}
+			case SDL_MOUSEBUTTONUP => {
+				if (e button button == SDL_BUTTON_WHEELUP && topLine > 3) {
+					topLine -= 4
+					dirty = true
+				}
+				else if (e button button == SDL_BUTTON_WHEELDOWN && topLine < lines lastIndex() - 3) {
+					topLine += 4
+					dirty = true
 				}
 			}
 		}
