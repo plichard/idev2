@@ -130,9 +130,7 @@ Tabbed: class extends Widget {
 					}
 				}
 			}
-			for(tab in tabs) {
-				tab handleEvent(e)
-			}
+            tabs get(focus) handleEvent(e)
 		}
 		dialog handleEvent(e)
 		//printf("dialog show: %d\n",dialog _show)
