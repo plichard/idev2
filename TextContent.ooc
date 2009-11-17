@@ -255,6 +255,10 @@ TextContent: class extends Widget {
 			i += 1
 		}
 		line[i] = '\0'
+        
+        // skip the '\n'
+        filereader read()
+        
         //printf("Got line %s\n", line)
 		return line as String clone()
 	}
