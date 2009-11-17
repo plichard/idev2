@@ -4,6 +4,7 @@ import Vector
 import Widget
 import structs/LinkedList
 import OpenFileDialog
+import TextContent
 
 include ./font/font
 renderFont: extern func(...)
@@ -70,12 +71,21 @@ Tabbed: class extends Widget {
 		w parent = this
 		focus = tabs lastIndex()
 	}
+	
+	newTextTab: func {
+		tab := TextContent new(true)
+		tab show()
+		tabs add(tab)
+		focus = tabs lastIndex()
+	}
     
     removeAt: func (index: Int) {
-        tabs removeAt(index)
-        if(focus >= tabs size()) {
-            focus -= 1
-        }
+		if(index >= 0 && index <= tabs lastIndex()) {
+			tabs removeAt(index)
+			if(focus >= tabs size()) {
+				focus -= 1
+			}
+		}
     }
 	
 	handleEvent: func(e: Event) {
@@ -101,6 +111,12 @@ Tabbed: class extends Widget {
                         case SDLK_w => {
                             if(state & KMOD_LCTRL || state & KMOD_RCTRL) {
                                 removeAt(focus)
+                                dirty = true
+                            }
+                        }
+                        case SDLK_t => {
+                            if(state & KMOD_LCTRL || state & KMOD_RCTRL) {
+                                newTextTab()
                                 dirty = true
                             }
                         }
