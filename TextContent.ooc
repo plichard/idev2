@@ -201,9 +201,13 @@ TextContent: class extends Widget {
 			nChars += 1
 			c = filereader read()
 		}
-		line : Char[nChars]
-		filereader rewind(nChars)
-		while(c != '\n' && filereader hasNext()) {
+		
+		line : Char[nChars + 2]
+		filereader rewind(nChars + 1)
+		c = filereader read()
+		i = 0
+		while(i < nChars ) {
+			printf("line[%d] = %c\n",i,c)
 			line[i] = c
 			i += 1
 			c = filereader read()

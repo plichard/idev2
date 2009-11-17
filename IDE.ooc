@@ -25,16 +25,7 @@ IDE: class {
 		
 		tabbed := Tabbed new(window width,window height)
 		tabbed show()
-		text1 := TextContent new(true)
-		text1 reload("font/main.c")
-		text1 show()
-		
-		text2 := TextContent new(true)
-		text2 reload("font/font.h")
-		text2 show()
-		
-		tabbed add(text1 as Widget)
-		tabbed add(text2 as Widget)
+		tabbed newTextTab()
 		ui add(tabbed as Widget)
 		mainLoop()
 	}
