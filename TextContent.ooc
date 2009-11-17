@@ -16,13 +16,17 @@ TextContent: class extends Widget {
 	nline := 0				//variable use for loading and so...
 	topLine := 0 			//index of the first visible line
 	currentLine := 0		//index of the line containing the cursor, so we can highlight it
-	
+	numbersWidth := 0
 	file := "Tabbed.ooc"	
 	
 	
 	bgColor := Vector3b new(254,254,254)		//background color
 	
-	init: func(=fill) {
+	init: func ~textContent (=fill) {
+		super()
+	}
+	
+	init: func ~textParent (=fill,=parent) {
 		super()
 	}
 	
@@ -35,6 +39,7 @@ TextContent: class extends Widget {
 		}
 		
 		nline = 0
+		numbersWidth = log10(lines size()) as Int + 1
 		bgDraw()
 		drawText()
 		drawLineNumbers()
@@ -42,7 +47,7 @@ TextContent: class extends Widget {
 	
 	drawText: func {
 		glPushMatrix()
-		glTranslated(30,0,0)
+		glTranslated(numbersWidth * 10,0,0)
 		
 		for(line in lines) {
 			if(nline == currentLine) {
@@ -66,12 +71,13 @@ TextContent: class extends Widget {
 	
 	
 	drawLineNumbers: func {
+		
 		glPushMatrix()
 		glColor3ub(200,200,200)
 		glBegin(GL_QUADS)
 		glVertex2i(0,0)
-		glVertex2i(30,0)
-		glVertex2i(30,lines size() * 17 + 10)
+		glVertex2i(numbersWidth*10,0)
+		glVertex2i(numbersWidth * 10,lines size() * 17 + 10)
 		glVertex2i(0,lines size() * 17 + 10)
 		glEnd()
 		glColor3ub(0,0,64)
