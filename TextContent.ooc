@@ -14,7 +14,7 @@ ftglGetFontBBox: extern func(...) -> Pointer
 TextContent: class extends Widget {
 	
 	lines := LinkedList<String> new()	//contains all lines
-	cachedLines := LinkedList<String> new()
+	cachedLines := LinkedList<GLuint> new()
 	nline := 0				//variable use for loading and so...
 	topLine := 0 			//index of the first visible line
 	bottomLine := 0
@@ -124,9 +124,10 @@ TextContent: class extends Widget {
 	
 	cacheLines: func() {
 		cachedLines clear()
+		cline := 0
 		for(line in lines) {
 			lineSize := 0
-			for(n := 0;n<line length();n += 1) {
+			for(n in 0..line length()) {
 				if(line[n] == '\t') {
 					lineSize += 4
 				} else {
@@ -147,7 +148,9 @@ TextContent: class extends Widget {
 				}
 			}
 			rline[lineSize - 1] = '\0'
-			cachedLines add(rline)	
+			printf("cached #%d: %s\n",cline,rline)
+			//cachedLines add(rline)	
+			cline += 1
 		}
 	}
 	
@@ -194,6 +197,7 @@ TextContent: class extends Widget {
 			lines add(line)
 		}
 		fr close()
+		cacheLines()
         printf("Finished loading %s (%d lines total)\n", file, lines size())
 	}
 	
@@ -239,20 +243,16 @@ TextContent: class extends Widget {
 		i := 0
 		nChars := 0
 		//line : Char[256]
-		c : Char = filereader read()
-		while(c != '\n' && filereader hasNext()) {
+		while(filereader hasNext() && filereader read() != '\n' ) {
 			nChars += 1
-			c = filereader read()
 		}
 		
-		line : Char[nChars + 2]
+		line : Char[nChars + 1]
 		filereader rewind(nChars + 1)
-		c = filereader read()
 		i = 0
-		while(i < nChars ) {
-			line[i] = c
+		while(i < nChars) {
+			line[i] = filereader read()
 			i += 1
-			c = filereader read()
 		}
 		line[i] = '\0'
         //printf("Got line %s\n", line)
@@ -260,3 +260,4 @@ TextContent: class extends Widget {
 	}
 	
 }
+
