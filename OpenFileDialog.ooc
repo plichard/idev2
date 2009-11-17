@@ -24,6 +24,8 @@ OpenFileDialog: class extends Widget {
 	}
 	
 	handleEvent: func(e: Event) {
+		if(!_show) return
+
 		state := SDL getModState()
 		match( e type ) {
 			case SDL_KEYDOWN => {

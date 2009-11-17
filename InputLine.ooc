@@ -65,10 +65,14 @@ InputLine: class extends Widget {
                     if(state & KMOD_SHIFT) {
                         ch -= (97 - 65)
                     }
+                    //pc := (e key keysym unicode&) as Char*
+                    //s := ""
+                    //s = s + pc[0]
+                    //s = s + pc[1]
                     if(caretStart == buffer length()) {
-                        buffer = buffer + e key keysym unicode as Char
+                        buffer = buffer + ch as Char
                     } else {
-                        buffer = buffer substring(0, caretStart) + e key keysym unicode as Char + buffer substring(caretStart, buffer length())
+                        buffer = buffer substring(0, caretStart) + ch as Char + buffer substring(caretStart, buffer length())
                     }
                     caretStart += 1
                     dirty = true
