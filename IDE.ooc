@@ -34,9 +34,9 @@ IDE: class {
 		text2 reload("font/font.h")
 		text2 show()
 		
-		tabbed add(text1)
-		tabbed add(text2)
-		ui add(tabbed)
+		tabbed add(text1 as Widget)
+		tabbed add(text2 as Widget)
+		ui add(tabbed as Widget)
 		mainLoop()
 	}
 	
