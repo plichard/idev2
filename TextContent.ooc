@@ -15,8 +15,11 @@ TextContent: class extends Widget {
 	cachedLines := LinkedList<GLuint> new()
 	nline := 0				//variable use for loading and so...
 	topLine := 0 			//index of the first visible line
+	bottomLine := 0
+	visibleLines := 0
 	currentLine := 0		//index of the line containing the cursor, so we can highlight it
 	numbersWidth := 0
+	lineSpacing := 17
 	file := "Tabbed.ooc"	
 	
 	
@@ -48,8 +51,14 @@ TextContent: class extends Widget {
 	drawText: func {
 		glPushMatrix()
 		glTranslated(numbersWidth * 10,0,0)
-		
-		for(line in lines) {
+		visibleLines = (size y / lineSpacing) as Int + 1
+		bottomLine = topLine + visibleLines
+		iter := lines iterator()
+		i := 0
+		for(i in 0..topLine) { iter next() }
+		while (iter hasNext() && i < bottomLine) {
+			i += 1
+			line := iter next()
 			if(nline == currentLine) {
 				highDraw()
 			}
@@ -63,7 +72,7 @@ TextContent: class extends Widget {
 			}
 			glColor3ub(0,0,0)
 			renderFont(4,12, 0.2,1,rline)
-			glTranslated(0,17,0)
+			glTranslated(0,lineSpacing,0)
 			nline += 1
 		}
 		glPopMatrix()
@@ -71,21 +80,20 @@ TextContent: class extends Widget {
 	
 	
 	drawLineNumbers: func {
-		
 		glPushMatrix()
 		glColor3ub(200,200,200)
 		glBegin(GL_QUADS)
 		glVertex2i(0,0)
 		glVertex2i(numbersWidth*10,0)
-		glVertex2i(numbersWidth * 10,lines size() * 17 + 10)
-		glVertex2i(0,lines size() * 17 + 10)
+		glVertex2i(numbersWidth * 10,lines size() * lineSpacing + 10)
+		glVertex2i(0,lines size() * lineSpacing + 10)
 		glEnd()
 		glColor3ub(0,0,64)
 		for(i in 0..lines size()) {
 			number: Char[4]
 			sprintf(number,"%d",i)
 			renderFont(1,12,0.2,1,number)
-			glTranslated(0,17,0)
+			glTranslated(0,lineSpacing,0)
 		}
 		glPopMatrix()
 	}
@@ -149,7 +157,7 @@ TextContent: class extends Widget {
         
 		for(i in 0..nline) {
 			line := readLine(fr)
-            printf("Also got line %s\n", line)
+            //printf("Also got line %s\n", line)
 			lines add(line)
 		}
 		fr close()
@@ -164,7 +172,7 @@ TextContent: class extends Widget {
 						currentLine -= 1
 						if(currentLine < 0)
 							currentLine = 0
-						printf("currentLine: %d\n",currentLine)
+						//printf("currentLine: %d\n",currentLine)
 						dirty = true
 					}
 					
@@ -172,7 +180,7 @@ TextContent: class extends Widget {
 						currentLine += 1
 						if(currentLine > lines lastIndex())
 							currentLine = lines lastIndex()
-						printf("currentLine: %d\n",currentLine)
+						//printf("currentLine: %d\n",currentLine)
 						dirty = true
 					}
 				}
@@ -186,15 +194,22 @@ TextContent: class extends Widget {
 	
 	readLine: func(filereader: FileReader) -> String{
 		i := 0
-		line : Char[128]
+		nChars := 0
+		//line : Char[256]
 		c : Char = filereader read()
+		while(c != '\n' && filereader hasNext()) {
+			nChars += 1
+			c = filereader read()
+		}
+		line : Char[nChars]
+		filereader rewind(nChars)
 		while(c != '\n' && filereader hasNext()) {
 			line[i] = c
 			i += 1
 			c = filereader read()
 		}
 		line[i] = '\0'
-        printf("Got line %s\n", line)
+        //printf("Got line %s\n", line)
 		return line as String clone()
 	}
 	

@@ -15,7 +15,7 @@ initFont: extern func(...)
 
 IDE: class {
 	
-	window := RenderWindow new(1680, 1050, 32, false)
+	window := RenderWindow new(1280, 800, 32, false)
 	ui := UI new()
 	running := false
 	
@@ -30,7 +30,6 @@ IDE: class {
 		text1 show()
 		
 		text2 := TextContent new(true)
-		text2 setName("Nom supeeeee")
 		text2 reload("font/font.h")
 		text2 show()
 		
