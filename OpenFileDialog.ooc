@@ -30,12 +30,6 @@ OpenFileDialog: class extends Widget {
 		match( e type ) {
 			case SDL_KEYDOWN => {
 				match(e key keysym sym) {
-					case SDLK_o => {
-						if(state & KMOD_LCTRL || state & KMOD_RCTRL) {
-							show()
-							dirty = true
-						}
-					}
 					case SDLK_RETURN => {
                         hide()
                         f := File new(textField buffer)

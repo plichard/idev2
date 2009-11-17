@@ -24,6 +24,7 @@ Tabbed: class extends Widget {
 		super()
 		size = Vector2i new(x,y)
 		csize = Vector2i new(x,y - tabHeight)
+		printf("Tabbed[%p] has a csize of: %d,%d \n",this,csize x, csize y)
 		dialog _show = false
 	}
 	
@@ -73,7 +74,7 @@ Tabbed: class extends Widget {
 	}
 	
 	newTextTab: func {
-		tab := TextContent new(true)
+		tab := TextContent new(true,this)
 		tab show()
 		tabs add(tab)
 		focus = tabs lastIndex()
@@ -117,6 +118,12 @@ Tabbed: class extends Widget {
                         case SDLK_t => {
                             if(state & KMOD_LCTRL || state & KMOD_RCTRL) {
                                 newTextTab()
+                                dirty = true
+                            }
+                        }
+                        case SDLK_o => {
+                            if(state & KMOD_LCTRL || state & KMOD_RCTRL) {
+                                dialog show()
                                 dirty = true
                             }
                         }
