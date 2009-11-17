@@ -26,20 +26,20 @@ OpenFileDialog: class extends Widget {
 	handleEvent: func(e: Event) {
 		if(!_show) return
 
-		state := SDL getModState()
+        //state := SDL getModState()
 		match( e type ) {
 			case SDL_KEYDOWN => {
 				match(e key keysym sym) {
 					case SDLK_RETURN => {
                         hide()
                         f := File new(textField buffer)
-                        if(f exists()) {
+                        if(f exists() && f isFile()) {
                             text := TextContent new(true)
                             text reload(textField buffer)
                             text show()
                             tabbed add(text)
                         } else {
-                            printf("%s doesn't exist! Abandon..\n", textField buffer)
+                            printf("%s doesn't exist or is not a file! Abandon..\n", textField buffer)
                         }
 						dirty = true
 					}
