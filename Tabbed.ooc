@@ -70,6 +70,13 @@ Tabbed: class extends Widget {
 		w parent = this
 		focus = tabs lastIndex()
 	}
+    
+    removeAt: func (index: Int) {
+        tabs removeAt(index)
+        if(focus >= tabs size()) {
+            focus -= 1
+        }
+    }
 	
 	handleEvent: func(e: Event) {
 		state := SDL getModState()
@@ -91,6 +98,12 @@ Tabbed: class extends Widget {
 								dirty = true
 							}
 						}
+                        case SDLK_w => {
+                            if(state & KMOD_LCTRL || state & KMOD_RCTRL) {
+                                removeAt(focus)
+                                dirty = true
+                            }
+                        }
 					}
 				}
 			}

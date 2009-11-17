@@ -59,16 +59,16 @@ InputLine: class extends Widget {
 						
 					}
 				}*/
-                ch := e key keysym sym as Char
+                ch := e key keysym sym
                 // haha c'est tout moche.
-				if((ch >= SDLK_SPACE && ch <= SDLK_z && e key keysym sym != SDLK_LSHIFT && e key keysym sym != SDLK_RSHIFT) && !((state & KMOD_LCTRL) || (state & KMOD_RCTRL))) {
+				if((ch >= SDLK_SPACE && ch <= SDLK_z && ch != SDLK_LSHIFT && e key keysym sym != SDLK_RSHIFT) && !((state & KMOD_LCTRL) || (state & KMOD_RCTRL))) {
                     if(state & KMOD_SHIFT) {
                         ch -= (97 - 65)
                     }
                     if(caretStart == buffer length()) {
-                        buffer = buffer + ch
+                        buffer = buffer + e key keysym unicode as Char
                     } else {
-                        buffer = buffer substring(0, caretStart) + ch + buffer substring(caretStart, buffer length())
+                        buffer = buffer substring(0, caretStart) + e key keysym unicode as Char + buffer substring(caretStart, buffer length())
                     }
                     caretStart += 1
                     dirty = true

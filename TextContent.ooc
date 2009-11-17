@@ -128,7 +128,7 @@ TextContent: class extends Widget {
 	}
 	
 	reload: func(=file) {
-		printf("Loading %s...\n",file)
+		printf("Loading %s...\n", file)
 		fr := FileReader new(file)
 		name = file
 		lines clear()
@@ -140,13 +140,14 @@ TextContent: class extends Widget {
 			}
 		}
 		fr reset(0)
+        
 		for(i in 0..nline) {
 			line := readLine(fr)
+            printf("Also got line %s\n", line)
 			lines add(line)
 		}
 		fr close()
-		//lines add("awdkagudfawbk")	
-		//cacheLines()
+        printf("Finished loading %s (%d lines total)\n", file, lines size())
 	}
 	
 	handleEvent: func(e: Event) {
@@ -187,6 +188,7 @@ TextContent: class extends Widget {
 			c = filereader read()
 		}
 		line[i] = '\0'
+        printf("Got line %s\n", line)
 		return line as String clone()
 	}
 	

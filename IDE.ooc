@@ -20,6 +20,7 @@ IDE: class {
 	running := false
 	
 	init: func {
+        SDL enableUnicode(1)
 		initFont(80,72)
 		
 		tabbed := Tabbed new(window width,window height)
