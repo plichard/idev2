@@ -70,7 +70,7 @@ Widget: abstract class {
 				} else {
 					glColor4d(0,0,0,0.5)
 				}
-				drawQuad(0,0,1280,800)
+				drawQuad(0,0,windowWidth,windowHeight)
 			}
 			if(hideType != NORMAL_HIDE) {
 				animHide()

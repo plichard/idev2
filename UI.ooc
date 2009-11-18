@@ -16,26 +16,25 @@ UI: class {
 	}
 	
 	render: func {
+		Widget keepDirty = false
 		if(Widget dirty) {
 			glClear( GL_COLOR_BUFFER_BIT)
-		}
-		Widget keepDirty = false
-		glDisable(GL_DEPTH_TEST)
-		glMatrixMode( GL_MODELVIEW )
-		glLoadIdentity( )
 		
-		glPushMatrix()
-		if(Widget dirty) {
+			glDisable(GL_DEPTH_TEST)
+			glMatrixMode( GL_MODELVIEW )
+			glLoadIdentity( )
+		
+			glPushMatrix()
 			for(widget in widgets) {
 				widget render()
 			}
 			if(!Widget keepDirty)
 				Widget dirty = false
-		} 
-		glPopMatrix()
-		
-		glFlush()
-		SDLVideo glSwapBuffers()
+				
+			glPopMatrix()
+			glFlush()
+			SDLVideo glSwapBuffers()
+		} 	
 	}
 	
 	refresh: func(w,h: Int) {
