@@ -73,6 +73,7 @@ RenderWindow: class {
 				    quit(1)
 				}
 			    resizeWindow( event@ resize w, event@ resize h )
+			    return true
 			}
 			 
 			case SDL_KEYDOWN => return handleKeyPress( event@ key keysym&)

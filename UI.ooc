@@ -38,7 +38,9 @@ UI: class {
 		SDLVideo glSwapBuffers()
 	}
 	
-	refresh: func {
+	refresh: func(w,h: Int) {
+		Widget windowWidth = w
+		Widget windowHeight = h
 		Widget dirty = true
 	}
 	

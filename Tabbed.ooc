@@ -22,8 +22,8 @@ Tabbed: class extends Widget {
 	
 	init: func ~tabbed (x,y: Int){
 		super()
-		size = Vector2i new(x,y)
-		csize = Vector2i new(x,y - tabHeight)
+		size = Vector2i new(Widget windowWidth,Widget windowHeight)
+		csize = Vector2i new(size x,size y - tabHeight)
 		//printf("Tabbed[%p] has a csize of: %d,%d \n",this,csize x, csize y)
 		dialog _show = false
 	}
@@ -31,6 +31,8 @@ Tabbed: class extends Widget {
 	setHeight: func(=tabHeight) {}
 	
 	_render: func {
+		size = Vector2i new(Widget windowWidth,Widget windowHeight)
+		csize = Vector2i new(size x,size y - tabHeight)
 		glPushMatrix()
 		ntab := 0
 		for(tab in tabs) {

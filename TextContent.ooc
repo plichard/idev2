@@ -56,7 +56,6 @@ TextContent: class extends Widget {
 		if(fill) {
 			if(parent) {
 			size = Vector2i new(parent csize)
-			size x -= scrollWidth
 			}
 		}
 		
@@ -76,8 +75,9 @@ TextContent: class extends Widget {
 		glTranslated(numbersWidth * 10,0,0)
 		visibleLines = (size y / lineSpacing) as Int + 1
 		bottomLine = topLine + visibleLines
-		if(bottomLine > lines lastIndex())
+		if(bottomLine > lines lastIndex()) {
 			bottomLine = lines lastIndex()
+		}
 		iter := cachedLines iterator()
 		i := 0
 		for(i in 0..topLine) { iter next() }
@@ -103,8 +103,9 @@ TextContent: class extends Widget {
 		glTranslated(numbersWidth * 10,0,0)
 		visibleLines = (size y / lineSpacing) as Int + 1
 		bottomLine = topLine + visibleLines
-		if(bottomLine > lines lastIndex())
+		if(bottomLine > lines lastIndex()) {
 			bottomLine = lines lastIndex()
+		}
 		iter := lines iterator()
 		i := 0
 		character : Char[2]
@@ -145,11 +146,12 @@ TextContent: class extends Widget {
 		glBegin(GL_QUADS)
 		glVertex2i(0,0)
 		glVertex2i(numbersWidth*10,0)
-		glVertex2i(numbersWidth * 10,lines size() * lineSpacing + 10)
-		glVertex2i(0,lines size() * lineSpacing + 10)
+		glVertex2i(numbersWidth * 10, size y)
+		glVertex2i(0,size y)
 		glEnd()
 		glColor4ub(0,0,64,255)
 		for(i in topLine..bottomLine + 1) {
+			printf("drawing line numbers: [%d..%d]\n",topLine, bottomLine + 1)
 			number: Char[4]
 			sprintf(number,"%d",i)
 			renderFont(1,12,0.2,1,number)
@@ -294,12 +296,18 @@ TextContent: class extends Widget {
 				}
 			}
 			case SDL_MOUSEBUTTONUP => {
-				if (e button button == SDL_BUTTON_WHEELUP && topLine > 3) {
+				if (e button button == SDL_BUTTON_WHEELUP && lines size() > 0) {
 					topLine -= 4
+					if(topLine < 0) {
+						topLine = 0
+					}
 					dirty = true
 				}
-				else if (e button button == SDL_BUTTON_WHEELDOWN && topLine < lines lastIndex() - 3) {
+				else if (e button button == SDL_BUTTON_WHEELDOWN && lines size() > 0) {
 					topLine += 4
+					if(topLine > lines lastIndex()) {
+						topLine = lines lastIndex()
+					}
 					dirty = true
 				}
 			}

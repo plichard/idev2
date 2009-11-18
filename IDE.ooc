@@ -38,6 +38,7 @@ IDE: class {
 		running = true
 		lastTime := SDL getTicks()
 		currentTime := SDL getTicks()
+		ui refresh(window width, window height)
 		while(running){
 			currentTime = SDL getTicks()
 			if (currentTime - lastTime > 15)
@@ -59,11 +60,17 @@ IDE: class {
 		
 	handleEvent: func {
 		event: Event
+		state := SDL getModState()
 		while ( SDLEvent poll( event& ) ) {
 			match( event type ) {
 				case SDL_KEYDOWN => {
 					match(event key keysym sym) {
-						case SDLK_F5 => ui refresh()
+						case SDLK_F5 => ui refresh(window width, window height)
+						case SDLK_q => {
+							if(state & KMOD_LCTRL || state & KMOD_RCTRL) {
+								running = false
+							}
+						}
 					}
 				}
 				
@@ -71,7 +78,8 @@ IDE: class {
 			}
 			ui handleEvent(event)
 			if(window handleEvent(event&)){
-				ui refresh()
+				ui refresh(window width, window height)
+				printf("changed resolution: %dx%d\n",window width, window height)
 			}
 		}
 	}

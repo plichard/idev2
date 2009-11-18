@@ -16,7 +16,7 @@ Widget: abstract class {
 	size := Vector2i new(0,0)
 	
 	cpos := Vector2i new(0,0)  //position of a child widget, if available
-	csize := Vector2i new(200,200) //space avalaible to a child widget, if any
+	csize := Vector2i new(size x,size y) //space avalaible to a child widget, if any
 	
 	scale := Vector2d new(1,1)
 	_show := false
@@ -27,6 +27,9 @@ Widget: abstract class {
 	hovered := false
 	modal := false
 	id : Int
+	
+	windowWidth : static Int = 0
+	windowHeight : static Int = 0
 	
 	step := 0.0
 	nstep := 10.0
@@ -45,6 +48,15 @@ Widget: abstract class {
 	setPos: func(=pos) {dirty = true}
 	
 	_render: abstract func()
+	
+	//resizes a widget with a beautiful animation =), fill flag will be turned off
+	dynResize: func(x,y: Int) {
+		fill = false
+		/// TODO implement it dang it!
+		
+		dirty = true
+		keepDirty = true
+	}
 	
 	render: func {
 		if(_show ) {
