@@ -13,7 +13,7 @@ Widget: abstract class {
 	dirty : static Bool = false
 	keepDirty : static Bool = false
 	pos := Vector2i new(0,0)
-	size := Vector2i new(200,200)
+	size := Vector2i new(0,0)
 	
 	cpos := Vector2i new(0,0)  //position of a child widget, if available
 	csize := Vector2i new(200,200) //space avalaible to a child widget, if any
@@ -21,7 +21,7 @@ Widget: abstract class {
 	scale := Vector2d new(1,1)
 	_show := false
 	parent: Widget = null
-	fill := true
+	fill := false
 	name := "<unknown>"
 	focused := false
 	hovered := false
@@ -39,9 +39,9 @@ Widget: abstract class {
 	
 	setName: func(=name) {}
 	
-	setSize: func(x,y: Int) {
-		size = Vector2i new(x,y)
-	}
+	setSize: func(=size) { dirty = true}
+	
+	setPos: func(=pos) {dirty = true}
 	
 	_render: abstract func()
 	

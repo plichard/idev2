@@ -77,7 +77,7 @@ RenderWindow: class {
 			   
 			case SDL_QUIT => return false
 		}
-		return true
+		return false
 	}
 		
 	handleKeyPress: func(keysym: Keysym*) -> Bool{

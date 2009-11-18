@@ -43,3 +43,723 @@ TextContent: class extends Widget {
 		nline = 0
 		numbersWidth = log10(lines size()) as Int + 1
 		bgDraw()
+use glew,sdl
+import glew,sdl/[Sdl,Event]
+import structs/LinkedList
+import Vector
+import Widget
+import io/FileReader
+include ./font/font
+
+initFont: extern func(...)
+renderFont: extern func(...)
+
+TextContent: class extends Widget {	
+	lines := LinkedList<String> new()	//contains all lines
+	cachedLines := LinkedList<GLuint> new()
+	nline := 0				//variable use for loading and so...
+	topLine := 0 			//index of the first visible line
+	bottomLine := 0
+	visibleLines := 0
+	currentLine := 0		//index of the line containing the cursor, so we can highlight it
+	numbersWidth := 0
+	lineSpacing := 17
+	file := "Tabbed.ooc"	
+	
+	
+	bgColor := Vector3b new(254,254,254)		//background color
+	
+	init: func ~textContent (=fill) {
+		super()
+	}
+	
+	init: func ~textParent (=fill,=parent) {
+		super()
+	}
+	
+	
+	_render: func {
+		if(fill) {
+			if(parent) {
+			size = parent csize
+			}
+		}
+		
+		nline = 0
+		numbersWidth = log10(lines size()) as Int + 1
+		bgDraw()
+use glew,sdl
+import glew,sdl/[Sdl,Event]
+import structs/LinkedList
+import Vector
+import Widget
+import io/FileReader
+include ./font/font
+
+initFont: extern func(...)
+renderFont: extern func(...)
+
+TextContent: class extends Widget {	
+	lines := LinkedList<String> new()	//contains all lines
+	cachedLines := LinkedList<GLuint> new()
+	nline := 0				//variable use for loading and so...
+	topLine := 0 			//index of the first visible line
+	bottomLine := 0
+	visibleLines := 0
+	currentLine := 0		//index of the line containing the cursor, so we can highlight it
+	numbersWidth := 0
+	lineSpacing := 17
+	file := "Tabbed.ooc"	
+	
+	
+	bgColor := Vector3b new(254,254,254)		//background color
+	
+	init: func ~textContent (=fill) {
+		super()
+	}
+	
+	init: func ~textParent (=fill,=parent) {
+		super()
+	}
+	
+	
+	_render: func {
+		if(fill) {
+			if(parent) {
+			size = parent csize
+			}
+		}
+		
+		nline = 0
+		numbersWidth = log10(lines size()) as Int + 1
+		bgDraw()
+use glew,sdl
+import glew,sdl/[Sdl,Event]
+import structs/LinkedList
+import Vector
+import Widget
+import io/FileReader
+include ./font/font
+
+initFont: extern func(...)
+renderFont: extern func(...)
+
+TextContent: class extends Widget {	
+	lines := LinkedList<String> new()	//contains all lines
+	cachedLines := LinkedList<GLuint> new()
+	nline := 0				//variable use for loading and so...
+	topLine := 0 			//index of the first visible line
+	bottomLine := 0
+	visibleLines := 0
+	currentLine := 0		//index of the line containing the cursor, so we can highlight it
+	numbersWidth := 0
+	lineSpacing := 17
+	file := "Tabbed.ooc"	
+	
+	
+	bgColor := Vector3b new(254,254,254)		//background color
+	
+	init: func ~textContent (=fill) {
+		super()
+	}
+	
+	init: func ~textParent (=fill,=parent) {
+		super()
+	}
+	
+	
+	_render: func {
+		if(fill) {
+			if(parent) {
+			size = parent csize
+			}
+		}
+		
+		nline = 0
+		numbersWidth = log10(lines size()) as Int + 1
+		bgDraw()
+use glew,sdl
+import glew,sdl/[Sdl,Event]
+import structs/LinkedList
+import Vector
+import Widget
+import io/FileReader
+include ./font/font
+
+initFont: extern func(...)
+renderFont: extern func(...)
+
+TextContent: class extends Widget {	
+	lines := LinkedList<String> new()	//contains all lines
+	cachedLines := LinkedList<GLuint> new()
+	nline := 0				//variable use for loading and so...
+	topLine := 0 			//index of the first visible line
+	bottomLine := 0
+	visibleLines := 0
+	currentLine := 0		//index of the line containing the cursor, so we can highlight it
+	numbersWidth := 0
+	lineSpacing := 17
+	file := "Tabbed.ooc"	
+	
+	
+	bgColor := Vector3b new(254,254,254)		//background color
+	
+	init: func ~textContent (=fill) {
+		super()
+	}
+	
+	init: func ~textParent (=fill,=parent) {
+		super()
+	}
+	
+	
+	_render: func {
+		if(fill) {
+			if(parent) {
+			size = parent csize
+			}
+		}
+		
+		nline = 0
+		numbersWidth = log10(lines size()) as Int + 1
+		bgDraw()
+use glew,sdl
+import glew,sdl/[Sdl,Event]
+import structs/LinkedList
+import Vector
+import Widget
+import io/FileReader
+include ./font/font
+
+initFont: extern func(...)
+renderFont: extern func(...)
+
+TextContent: class extends Widget {	
+	lines := LinkedList<String> new()	//contains all lines
+	cachedLines := LinkedList<GLuint> new()
+	nline := 0				//variable use for loading and so...
+	topLine := 0 			//index of the first visible line
+	bottomLine := 0
+	visibleLines := 0
+	currentLine := 0		//index of the line containing the cursor, so we can highlight it
+	numbersWidth := 0
+	lineSpacing := 17
+	file := "Tabbed.ooc"	
+	
+	
+	bgColor := Vector3b new(254,254,254)		//background color
+	
+	init: func ~textContent (=fill) {
+		super()
+	}
+	
+	init: func ~textParent (=fill,=parent) {
+		super()
+	}
+	
+	
+	_render: func {
+		if(fill) {
+			if(parent) {
+			size = parent csize
+			}
+		}
+		
+		nline = 0
+		numbersWidth = log10(lines size()) as Int + 1
+		bgDraw()
+use glew,sdl
+import glew,sdl/[Sdl,Event]
+import structs/LinkedList
+import Vector
+import Widget
+import io/FileReader
+include ./font/font
+
+initFont: extern func(...)
+renderFont: extern func(...)
+
+TextContent: class extends Widget {	
+	lines := LinkedList<String> new()	//contains all lines
+	cachedLines := LinkedList<GLuint> new()
+	nline := 0				//variable use for loading and so...
+	topLine := 0 			//index of the first visible line
+	bottomLine := 0
+	visibleLines := 0
+	currentLine := 0		//index of the line containing the cursor, so we can highlight it
+	numbersWidth := 0
+	lineSpacing := 17
+	file := "Tabbed.ooc"	
+	
+	
+	bgColor := Vector3b new(254,254,254)		//background color
+	
+	init: func ~textContent (=fill) {
+		super()
+	}
+	
+	init: func ~textParent (=fill,=parent) {
+		super()
+	}
+	
+	
+	_render: func {
+		if(fill) {
+			if(parent) {
+			size = parent csize
+			}
+		}
+		
+		nline = 0
+		numbersWidth = log10(lines size()) as Int + 1
+		bgDraw()
+use glew,sdl
+import glew,sdl/[Sdl,Event]
+import structs/LinkedList
+import Vector
+import Widget
+import io/FileReader
+include ./font/font
+
+initFont: extern func(...)
+renderFont: extern func(...)
+
+TextContent: class extends Widget {	
+	lines := LinkedList<String> new()	//contains all lines
+	cachedLines := LinkedList<GLuint> new()
+	nline := 0				//variable use for loading and so...
+	topLine := 0 			//index of the first visible line
+	bottomLine := 0
+	visibleLines := 0
+	currentLine := 0		//index of the line containing the cursor, so we can highlight it
+	numbersWidth := 0
+	lineSpacing := 17
+	file := "Tabbed.ooc"	
+	
+	
+	bgColor := Vector3b new(254,254,254)		//background color
+	
+	init: func ~textContent (=fill) {
+		super()
+	}
+	
+	init: func ~textParent (=fill,=parent) {
+		super()
+	}
+	
+	
+	_render: func {
+		if(fill) {
+			if(parent) {
+			size = parent csize
+			}
+		}
+		
+		nline = 0
+		numbersWidth = log10(lines size()) as Int + 1
+		bgDraw()
+use glew,sdl
+import glew,sdl/[Sdl,Event]
+import structs/LinkedList
+import Vector
+import Widget
+import io/FileReader
+include ./font/font
+
+initFont: extern func(...)
+renderFont: extern func(...)
+
+TextContent: class extends Widget {	
+	lines := LinkedList<String> new()	//contains all lines
+	cachedLines := LinkedList<GLuint> new()
+	nline := 0				//variable use for loading and so...
+	topLine := 0 			//index of the first visible line
+	bottomLine := 0
+	visibleLines := 0
+	currentLine := 0		//index of the line containing the cursor, so we can highlight it
+	numbersWidth := 0
+	lineSpacing := 17
+	file := "Tabbed.ooc"	
+	
+	
+	bgColor := Vector3b new(254,254,254)		//background color
+	
+	init: func ~textContent (=fill) {
+		super()
+	}
+	
+	init: func ~textParent (=fill,=parent) {
+		super()
+	}
+	
+	
+	_render: func {
+		if(fill) {
+			if(parent) {
+			size = parent csize
+			}
+		}
+		
+		nline = 0
+		numbersWidth = log10(lines size()) as Int + 1
+		bgDraw()
+use glew,sdl
+import glew,sdl/[Sdl,Event]
+import structs/LinkedList
+import Vector
+import Widget
+import io/FileReader
+include ./font/font
+
+initFont: extern func(...)
+renderFont: extern func(...)
+
+TextContent: class extends Widget {	
+	lines := LinkedList<String> new()	//contains all lines
+	cachedLines := LinkedList<GLuint> new()
+	nline := 0				//variable use for loading and so...
+	topLine := 0 			//index of the first visible line
+	bottomLine := 0
+	visibleLines := 0
+	currentLine := 0		//index of the line containing the cursor, so we can highlight it
+	numbersWidth := 0
+	lineSpacing := 17
+	file := "Tabbed.ooc"	
+	
+	
+	bgColor := Vector3b new(254,254,254)		//background color
+	
+	init: func ~textContent (=fill) {
+		super()
+	}
+	
+	init: func ~textParent (=fill,=parent) {
+		super()
+	}
+	
+	
+	_render: func {
+		if(fill) {
+			if(parent) {
+			size = parent csize
+			}
+		}
+		
+		nline = 0
+		numbersWidth = log10(lines size()) as Int + 1
+		bgDraw()
+use glew,sdl
+import glew,sdl/[Sdl,Event]
+import structs/LinkedList
+import Vector
+import Widget
+import io/FileReader
+include ./font/font
+
+initFont: extern func(...)
+renderFont: extern func(...)
+
+TextContent: class extends Widget {	
+	lines := LinkedList<String> new()	//contains all lines
+	cachedLines := LinkedList<GLuint> new()
+	nline := 0				//variable use for loading and so...
+	topLine := 0 			//index of the first visible line
+	bottomLine := 0
+	visibleLines := 0
+	currentLine := 0		//index of the line containing the cursor, so we can highlight it
+	numbersWidth := 0
+	lineSpacing := 17
+	file := "Tabbed.ooc"	
+	
+	
+	bgColor := Vector3b new(254,254,254)		//background color
+	
+	init: func ~textContent (=fill) {
+		super()
+	}
+	
+	init: func ~textParent (=fill,=parent) {
+		super()
+	}
+	
+	
+	_render: func {
+		if(fill) {
+			if(parent) {
+			size = parent csize
+			}
+		}
+		
+		nline = 0
+		numbersWidth = log10(lines size()) as Int + 1
+		bgDraw()
+use glew,sdl
+import glew,sdl/[Sdl,Event]
+import structs/LinkedList
+import Vector
+import Widget
+import io/FileReader
+include ./font/font
+
+initFont: extern func(...)
+renderFont: extern func(...)
+
+TextContent: class extends Widget {	
+	lines := LinkedList<String> new()	//contains all lines
+	cachedLines := LinkedList<GLuint> new()
+	nline := 0				//variable use for loading and so...
+	topLine := 0 			//index of the first visible line
+	bottomLine := 0
+	visibleLines := 0
+	currentLine := 0		//index of the line containing the cursor, so we can highlight it
+	numbersWidth := 0
+	lineSpacing := 17
+	file := "Tabbed.ooc"	
+	
+	
+	bgColor := Vector3b new(254,254,254)		//background color
+	
+	init: func ~textContent (=fill) {
+		super()
+	}
+	
+	init: func ~textParent (=fill,=parent) {
+		super()
+	}
+	
+	
+	_render: func {
+		if(fill) {
+			if(parent) {
+			size = parent csize
+			}
+		}
+		
+		nline = 0
+		numbersWidth = log10(lines size()) as Int + 1
+		bgDraw()
+use glew,sdl
+import glew,sdl/[Sdl,Event]
+import structs/LinkedList
+import Vector
+import Widget
+import io/FileReader
+include ./font/font
+
+initFont: extern func(...)
+renderFont: extern func(...)
+
+TextContent: class extends Widget {	
+	lines := LinkedList<String> new()	//contains all lines
+	cachedLines := LinkedList<GLuint> new()
+	nline := 0				//variable use for loading and so...
+	topLine := 0 			//index of the first visible line
+	bottomLine := 0
+	visibleLines := 0
+	currentLine := 0		//index of the line containing the cursor, so we can highlight it
+	numbersWidth := 0
+	lineSpacing := 17
+	file := "Tabbed.ooc"	
+	
+	
+	bgColor := Vector3b new(254,254,254)		//background color
+	
+	init: func ~textContent (=fill) {
+		super()
+	}
+	
+	init: func ~textParent (=fill,=parent) {
+		super()
+	}
+	
+	
+	_render: func {
+		if(fill) {
+			if(parent) {
+			size = parent csize
+			}
+		}
+		
+		nline = 0
+		numbersWidth = log10(lines size()) as Int + 1
+		bgDraw()
+use glew,sdl
+import glew,sdl/[Sdl,Event]
+import structs/LinkedList
+import Vector
+import Widget
+import io/FileReader
+include ./font/font
+
+initFont: extern func(...)
+renderFont: extern func(...)
+
+TextContent: class extends Widget {	
+	lines := LinkedList<String> new()	//contains all lines
+	cachedLines := LinkedList<GLuint> new()
+	nline := 0				//variable use for loading and so...
+	topLine := 0 			//index of the first visible line
+	bottomLine := 0
+	visibleLines := 0
+	currentLine := 0		//index of the line containing the cursor, so we can highlight it
+	numbersWidth := 0
+	lineSpacing := 17
+	file := "Tabbed.ooc"	
+	
+	
+	bgColor := Vector3b new(254,254,254)		//background color
+	
+	init: func ~textContent (=fill) {
+		super()
+	}
+	
+	init: func ~textParent (=fill,=parent) {
+		super()
+	}
+	
+	
+	_render: func {
+		if(fill) {
+			if(parent) {
+			size = parent csize
+			}
+		}
+		
+		nline = 0
+		numbersWidth = log10(lines size()) as Int + 1
+		bgDraw()
+use glew,sdl
+import glew,sdl/[Sdl,Event]
+import structs/LinkedList
+import Vector
+import Widget
+import io/FileReader
+include ./font/font
+
+initFont: extern func(...)
+renderFont: extern func(...)
+
+TextContent: class extends Widget {	
+	lines := LinkedList<String> new()	//contains all lines
+	cachedLines := LinkedList<GLuint> new()
+	nline := 0				//variable use for loading and so...
+	topLine := 0 			//index of the first visible line
+	bottomLine := 0
+	visibleLines := 0
+	currentLine := 0		//index of the line containing the cursor, so we can highlight it
+	numbersWidth := 0
+	lineSpacing := 17
+	file := "Tabbed.ooc"	
+	
+	
+	bgColor := Vector3b new(254,254,254)		//background color
+	
+	init: func ~textContent (=fill) {
+		super()
+	}
+	
+	init: func ~textParent (=fill,=parent) {
+		super()
+	}
+	
+	
+	_render: func {
+		if(fill) {
+			if(parent) {
+			size = parent csize
+			}
+		}
+		
+		nline = 0
+		numbersWidth = log10(lines size()) as Int + 1
+		bgDraw()
+use glew,sdl
+import glew,sdl/[Sdl,Event]
+import structs/LinkedList
+import Vector
+import Widget
+import io/FileReader
+include ./font/font
+
+initFont: extern func(...)
+renderFont: extern func(...)
+
+TextContent: class extends Widget {	
+	lines := LinkedList<String> new()	//contains all lines
+	cachedLines := LinkedList<GLuint> new()
+	nline := 0				//variable use for loading and so...
+	topLine := 0 			//index of the first visible line
+	bottomLine := 0
+	visibleLines := 0
+	currentLine := 0		//index of the line containing the cursor, so we can highlight it
+	numbersWidth := 0
+	lineSpacing := 17
+	file := "Tabbed.ooc"	
+	
+	
+	bgColor := Vector3b new(254,254,254)		//background color
+	
+	init: func ~textContent (=fill) {
+		super()
+	}
+	
+	init: func ~textParent (=fill,=parent) {
+		super()
+	}
+	
+	
+	_render: func {
+		if(fill) {
+			if(parent) {
+			size = parent csize
+			}
+		}
+		
+		nline = 0
+		numbersWidth = log10(lines size()) as Int + 1
+		bgDraw()
+use glew,sdl
+import glew,sdl/[Sdl,Event]
+import structs/LinkedList
+import Vector
+import Widget
+import io/FileReader
+include ./font/font
+
+initFont: extern func(...)
+renderFont: extern func(...)
+
+TextContent: class extends Widget {	
+	lines := LinkedList<String> new()	//contains all lines
+	cachedLines := LinkedList<GLuint> new()
+	nline := 0				//variable use for loading and so...
+	topLine := 0 			//index of the first visible line
+	bottomLine := 0
+	visibleLines := 0
+	currentLine := 0		//index of the line containing the cursor, so we can highlight it
+	numbersWidth := 0
+	lineSpacing := 17
+	file := "Tabbed.ooc"	
+	
+	
+	bgColor := Vector3b new(254,254,254)		//background color
+	
+	init: func ~textContent (=fill) {
+		super()
+	}
+	
+	init: func ~textParent (=fill,=parent) {
+		super()
+	}
+	
+	
+	_render: func {
+		if(fill) {
+			if(parent) {
+			size = parent csize
+			}
+		}
+		
+		nline = 0
+		numbersWidth = log10(lines size()) as Int + 1
+		bgDraw()

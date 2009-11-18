@@ -26,4 +26,8 @@ Vector3b: class {
 Vector2i: class {
 	x,y: Int
 	init: func(=x,=y) {}
+	init: func ~vec(v: Vector2i) {
+		x = v x
+		y = v y
+	}
 }

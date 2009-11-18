@@ -4,6 +4,7 @@ import structs/LinkedList
 import Vector
 import Widget
 import io/FileReader
+import ScrollBar
 include ./font/font
 
 initFont: extern func(...)
@@ -22,8 +23,10 @@ TextContent: class extends Widget {
 	currentLine := 0		//index of the line containing the cursor, so we can highlight it
 	numbersWidth := 0
 	lineSpacing := 17
+	scrollWidth := 20
 	fontWidth := 0.0
-	file := "Tabbed.ooc"	
+	file := "Tabbed.ooc"
+	scrollBar := ScrollBar new(this)	
 	
 	
 	bgColor := Vector3b new(254,254,254)		//background color
@@ -33,6 +36,9 @@ TextContent: class extends Widget {
 		bbox : Float[6]
 		ftglGetFontBBox (getFont(), "8", 1, bbox)
 		fontWidth = bbox[3]/5
+		scrollBar setPos(Vector2i new(size x,0))
+		scrollBar setSize(Vector2i new(scrollWidth,size y))
+		scrollBar show()
 	}
 	
 	init: func ~textParent (=fill,=parent) {
@@ -40,21 +46,56 @@ TextContent: class extends Widget {
 		bbox : Float[6]
 		ftglGetFontBBox (getFont(), "8", 1, bbox)
 		fontWidth = bbox[3]/5
+		scrollBar setPos(Vector2i new(size x,0))
+		scrollBar setSize(Vector2i new(scrollWidth,size y))
+		scrollBar show()
 	}
 	
 	
 	_render: func {
 		if(fill) {
 			if(parent) {
-			size = parent csize
+			size = Vector2i new(parent csize)
+			size x -= scrollWidth
 			}
 		}
 		
+		scrollBar setPos(Vector2i new(size x - scrollWidth,0))
+		scrollBar setSize(Vector2i new(scrollWidth,size y))
 		
 		numbersWidth = log10(lines size()) as Int + 1
 		bgDraw()
-		drawText()
+		//drawText()
+		drawCachedText()
 		drawLineNumbers()
+		scrollBar render()
+	}
+	
+	drawCachedText: func {
+		glPushMatrix()
+		glTranslated(numbersWidth * 10,0,0)
+		visibleLines = (size y / lineSpacing) as Int + 1
+		bottomLine = topLine + visibleLines
+		if(bottomLine > lines lastIndex())
+			bottomLine = lines lastIndex()
+		iter := cachedLines iterator()
+		i := 0
+		for(i in 0..topLine) { iter next() }
+		i = topLine
+		nline = topLine
+		while (iter hasNext() && i < bottomLine) {
+			line := iter next()
+			//printf("drawing line: %s\n",line)
+			if(nline == currentLine) {
+				highDraw()
+			}
+			glColor3ub(0,0,0)
+			glCallList(line)
+			glTranslated(0,lineSpacing,0)
+			nline += 1
+			i+=1
+		}
+		glPopMatrix()
 	}
 	
 	drawText: func {
@@ -124,33 +165,26 @@ TextContent: class extends Widget {
 	
 	cacheLines: func() {
 		cachedLines clear()
-		cline := 0
 		for(line in lines) {
-			lineSize := 0
-			for(n in 0..line length()) {
-				if(line[n] == '\t') {
-					lineSize += 4
-				} else {
-					lineSize += 1
+
+			dlist : GLuint = glGenLists(1)
+			glNewList(dlist, GL_COMPILE)
+			glPushMatrix()
+			for(i2 in 0..line length()) {
+				if(line[i2] == '\t') {
+					glTranslated(fontWidth*4,0,0)
+				} else if(line[i2] == ' '){
+					glTranslated(fontWidth,0,0)
+				}else {
+					character[0] = line[i2]
+					renderFont(4,12,0.2,1,line[i2])
+					glTranslated(fontWidth,0,0)
 				}
 			}
-			rline := String new(lineSize)
-			ri := 0
-			for(i in 0..lineSize) {
-				if(line[i] == '\t') {
-					for(n in 0..4) {
-						rline[ri+n] = ' '
-					}
-					ri += 4
-				} else {
-					rline[ri] = line[i]
-					ri += 1
-				}
-			}
-			rline[lineSize - 1] = '\0'
-			printf("cached #%d: %s\n",cline,rline)
-			//cachedLines add(rline)	
-			cline += 1
+			glPopMatrix()
+			glEndList()
+		
+			cachedLines add(dlist)
 		}
 	}
 	
@@ -218,6 +252,18 @@ TextContent: class extends Widget {
 						if(currentLine > lines lastIndex())
 							currentLine = lines lastIndex()
 						//printf("currentLine: %d\n",currentLine)
+						dirty = true
+					}
+					case SDLK_PAGEUP => {
+						topLine -= visibleLines
+						if(topLine < 0)
+							topLine = 0
+						dirty = true
+					}
+					case SDLK_PAGEDOWN => {
+						topLine += visibleLines
+						if(topLine > lines lastIndex())
+							topLine = lines lastIndex()
 						dirty = true
 					}
 				}
