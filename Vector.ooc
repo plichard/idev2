@@ -31,3 +31,9 @@ Vector2i: class {
 		y = v y
 	}
 }
+
+
+operator += (a,b: Vector2i) {
+	a x += b x
+	a y += b y
+}

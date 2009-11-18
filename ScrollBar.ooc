@@ -27,4 +27,6 @@ ScrollBar: class extends Widget {
 	
 	handleEvent: func(e: Event) {
 	}
+	handleKeyboardEvent: func(e: Event) {}
+	handleMouseEvent: func(e: Event) {}
 }

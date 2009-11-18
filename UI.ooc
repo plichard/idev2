@@ -53,6 +53,9 @@ UI: class {
 				mouse x = e motion x
 				mouse y = e motion y
 			}
+			case SDL_VIDEOEXPOSE => {
+				Widget dirty = true
+			}
 		}
 	}
 	

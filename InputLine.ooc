@@ -50,6 +50,9 @@ InputLine: class extends Widget {
 		glPopMatrix()
 	}
 	
+	handleKeyboardEvent: func(e: Event) {}
+	handleMouseEvent: func(e: Event) {}
+	
 	handleEvent: func(e: Event) {
 		state := SDL getModState()
 		match( e type ) {

@@ -19,6 +19,7 @@ Tabbed: class extends Widget {
 	offTabC := Vector3b new(128,128,128)
 	focus := -1
 	dialog := OpenFileDialog new(this)
+	tabsHovered := false
 	
 	init: func ~tabbed (x,y: Int){
 		super()
@@ -90,6 +91,9 @@ Tabbed: class extends Widget {
 			}
 		}
     }
+    
+    handleKeyboardEvent: func(e: Event) {}
+	handleMouseEvent: func(e: Event) {}
 	
 	handleEvent: func(e: Event) {
 		state := SDL getModState()
@@ -131,6 +135,19 @@ Tabbed: class extends Widget {
                         }
 					}
 				}
+				case SDL_MOUSEMOTION => {
+					hoverTab(e motion x, e motion y)
+				}
+				case SDL_MOUSEBUTTONUP => {
+					if (e button button == SDL_BUTTON_WHEELUP && tabsHovered) {
+						focus -= 1; focus < 0? focus = tabs lastIndex(): 0 
+						dirty = true
+					}
+					else if (e button button == SDL_BUTTON_WHEELDOWN && tabsHovered) {
+						focus += 1; focus > tabs lastIndex()? focus = 0:0
+						dirty = true
+					}
+				}
 			}
 			if(focus >= 0) {
 				tabs get(focus) handleEvent(e)
@@ -139,4 +156,23 @@ Tabbed: class extends Widget {
 		dialog handleEvent(e)
 		//printf("dialog show: %d\n",dialog _show)
 	}
+	
+	hoverTab: func(x,y: Int) {
+		absPos := getAbsPos()
+		if(y > absPos y && y < absPos y + tabHeight) {
+			tabsHovered = true
+			dirty = true
+			for(tab in tabs) {
+				bbox : Float[6]
+				ftglGetFontBBox (getFont(), tab name, tab name length(), bbox)
+				// bbox[3] = font width
+				// / 5 because we scale 5x after
+				// 30px right margin for the icon to come.
+				tabWidth = bbox[3]/5 + 30
+			}
+		} else {
+			tabsHovered = false
+		}
+	}
+	
 }

@@ -24,6 +24,9 @@ OpenFileDialog: class extends Widget {
 		textField show()
 	}
 	
+	handleKeyboardEvent: func(e: Event) {}
+	handleMouseEvent: func(e: Event) {}
+	
 	handleEvent: func(e: Event) {
 		if(!_show) return
 

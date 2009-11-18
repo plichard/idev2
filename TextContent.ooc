@@ -256,6 +256,8 @@ TextContent: class extends Widget {
 		cacheLines()
         printf("Finished loading %s (%d lines total)\n", file, lines size())
 	}
+	handleKeyboardEvent: func (e: Event){}
+	handleMouseEvent: func (e: Event){}
 	
 	handleEvent: func(e: Event) {
 		state := SDL getModState()

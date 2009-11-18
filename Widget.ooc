@@ -83,6 +83,8 @@ Widget: abstract class {
 	}
 	
 	handleEvent: abstract func(e: Event)
+	handleKeyboardEvent: abstract func(e: Event)
+	handleMouseEvent: abstract func(e: Event)
 	
 	show: func {
 		if(hideType == NORMAL_HIDE) {
@@ -125,6 +127,17 @@ Widget: abstract class {
 	
 	scroll: func (pixels: Int) {
 		printf("Warning: %s does not implement scroll\n",class name)
+	}
+	
+	
+	getAbsPos: func -> Vector2i{
+		currentWidget := this
+		pos := Vector2i new(this pos)
+		while(currentWidget parent) {
+			pos += parent pos
+			currentWidget  = currentWidget parent
+		}
+		return pos
 	}
 	
 }
