@@ -20,6 +20,7 @@ OpenFileDialog: class extends Widget {
 		csize = Vector2i new(size x - 10, size y - 10)
 		textField = InputLine new(this)
 		hideType = NE_HIDE
+		modal = true
 		textField show()
 	}
 	
@@ -43,6 +44,10 @@ OpenFileDialog: class extends Widget {
                         }
 						dirty = true
 					}
+					case SDLK_ESCAPE => {
+						hide()
+						dirty = true
+					}
 				}
 			}
 		}
@@ -55,7 +60,7 @@ OpenFileDialog: class extends Widget {
 	}
 	
 	bgDraw: func {
-		glColor3ub(128,128,128)
+		glColor4ub(200,200,250,128)
 		drawRounded(0,0,size x,size y,5)
 	}
 }

@@ -46,8 +46,10 @@ RenderWindow: class {
 		/* Reset The View */
 		glLoadIdentity( )
 		
-		//glEnable(GL_BLEND)
+		glEnable(GL_BLEND)
+		glDisable(GL_DEPTH_TEST)
 		//glBlendFunc(GL_SRC_ALPHA,GL_ONE)
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
 		return true
 	}
@@ -83,8 +85,6 @@ RenderWindow: class {
 	handleKeyPress: func(keysym: Keysym*) -> Bool{
 		match (keysym@ sym )
 		{
-		case SDLK_ESCAPE =>
-			return false
 
 		case SDLK_F11 =>
 			/* F1 key was pressed
@@ -111,13 +111,13 @@ RenderWindow: class {
 		glClearDepth( 1.0 )
 
 		/* Enables Depth Testing */
-		glEnable( GL_DEPTH_TEST )
+		glDisable( GL_DEPTH_TEST )
 
 		/* The Type Of Depth Test To Do */
-		glDepthFunc( GL_LEQUAL )
+		//glDepthFunc( GL_LEQUAL )
 
 		/* Really Nice Perspective Calculations */
-		glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST )
+		//glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST )
 
 		return true
 	}
@@ -186,8 +186,8 @@ RenderWindow: class {
 		resizeWindow( width, height )
 		
 		SDL enableKeyRepeat(300,30)
-		glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE)
-		glEnable(GL_COLOR_MATERIAL)
+		//glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE)
+		//glEnable(GL_COLOR_MATERIAL)
 
 	}
 	

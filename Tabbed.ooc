@@ -41,9 +41,9 @@ Tabbed: class extends Widget {
             // 30px right margin for the icon to come.
 			tabWidth = bbox[3]/5 + 30
 			if(ntab == focus) {
-				glColor3ub(onTabC x,onTabC y,onTabC z)
+				glColor4ub(onTabC x,onTabC y,onTabC z,255)
 			} else {
-				glColor3ub(offTabC x,offTabC y,offTabC z)
+				glColor4ub(offTabC x,offTabC y,offTabC z,255)
 			}
 			
 			glBegin(GL_QUADS)
@@ -52,7 +52,7 @@ Tabbed: class extends Widget {
 			glVertex2i(tabWidth, tabHeight)
 			glVertex2i(0, tabHeight)
 			glEnd()
-			glColor3ub(0, 0, 0)
+			glColor4ub(0, 0, 0, 255)
 			renderFont(0, 17, 0.2, 1, tab name)
 			
 			glTranslated(tabWidth,0,0)

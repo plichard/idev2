@@ -25,6 +25,7 @@ Widget: abstract class {
 	name := "<unknown>"
 	focused := false
 	hovered := false
+	modal := false
 	id : Int
 	
 	step := 0.0
@@ -48,6 +49,17 @@ Widget: abstract class {
 	render: func {
 		if(_show ) {
 			glPushMatrix()
+			if(modal) {
+				printf("step: %1.0f\n",step)
+				if(step > 0) {
+					glColor4d(0,0,0,(nstep - step)/nstep / 2.0 )
+				} else if(step < 0) {
+					glColor4d(0,0,0,-step/nstep /2.0)
+				} else {
+					glColor4d(0,0,0,0.5)
+				}
+				drawQuad(0,0,1280,800)
+			}
 			if(hideType != NORMAL_HIDE) {
 				animHide()
 			} else {
@@ -98,6 +110,10 @@ Widget: abstract class {
 			glTranslated(pos x, pos y, 0)
 		}
 	}	
+	
+	scroll: func (pixels: Int) {
+		printf("Warning: %s does not implement scroll\n",class name)
+	}
 	
 }
 

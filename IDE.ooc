@@ -63,7 +63,6 @@ IDE: class {
 			match( event type ) {
 				case SDL_KEYDOWN => {
 					match(event key keysym sym) {
-						case SDLK_ESCAPE => running = false
 						case SDLK_F5 => ui refresh()
 					}
 				}

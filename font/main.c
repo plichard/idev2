@@ -10,7 +10,7 @@ FTGLfont *getFont() {
 }
 
 void initFont(int x, int y) {
-	font = ftglCreateBufferFont("font/Terminus.ttf");
+	font = ftglCreateTextureFont("font/Terminus.ttf");
 	ftglSetFontFaceSize(font, x, y);
     ftglSetFontCharMap(font, ft_encoding_unicode);
     printf("initing font =)\n");

@@ -20,7 +20,7 @@ ScrollBar: class extends Widget {
 	setVal: func(=currentvalue) {dirty = true}
 	
 	_render: func {
-		glColor3ub(128,128,0)
+		glColor4ub(128,128,128,128)
 		printf("Drawing scrollbar at: %d,%d\n",pos x,pos y)
 		drawRounded(0, 0, size x, size y,size x / 2)
 	}

@@ -83,13 +83,13 @@ TextContent: class extends Widget {
 		for(i in 0..topLine) { iter next() }
 		i = topLine
 		nline = topLine
-		while (iter hasNext() && i < bottomLine) {
+		while (iter hasNext() && i < bottomLine + 1) {
 			line := iter next()
 			//printf("drawing line: %s\n",line)
 			if(nline == currentLine) {
 				highDraw()
 			}
-			glColor3ub(0,0,0)
+			glColor4ub(0,0,0,255)
 			glCallList(line)
 			glTranslated(0,lineSpacing,0)
 			nline += 1
@@ -107,11 +107,6 @@ TextContent: class extends Widget {
 			bottomLine = lines lastIndex()
 		iter := lines iterator()
 		i := 0
-		//printf("we got %d visible lines\n",bottomLine - topLine)
-		//printf("topline: %d\n",topLine)
-		//printf("bottomline: %d\n",bottomLine)
-		//printf("fontwidth: %d\n",fontWidth)
-		//printf("")
 		character : Char[2]
 		character[1] = '\0'
 		for(i in 0..topLine) { iter next() }
@@ -119,16 +114,16 @@ TextContent: class extends Widget {
 		nline = topLine
 		while (iter hasNext() && i < bottomLine) {
 			line := iter next()
-			//printf("drawing line: %s\n",line)
 			if(nline == currentLine) {
 				highDraw()
 			}
-			glColor3ub(0,0,0)
+			glColor4ub(0,0,0,255)
 			glPushMatrix()
 			for(i2 in 0..line length()) {
 				if(line[i2] == '\t') {
-					renderFont(4,12,0.2,1,"    ")
-					glTranslated(fontWidth*4,0,0)
+					glTranslated((fontWidth + 1)*4,0,0)
+				} else if(line[i2] == ' ') {
+					glTranslated(fontWidth + 1,0,0)
 				} else {
 					character[0] = line[i2]
 					renderFont(4,12,0.2,1,character)
@@ -146,15 +141,15 @@ TextContent: class extends Widget {
 	
 	drawLineNumbers: func {
 		glPushMatrix()
-		glColor3ub(200,200,200)
+		glColor4ub(200,200,200,255)
 		glBegin(GL_QUADS)
 		glVertex2i(0,0)
 		glVertex2i(numbersWidth*10,0)
 		glVertex2i(numbersWidth * 10,lines size() * lineSpacing + 10)
 		glVertex2i(0,lines size() * lineSpacing + 10)
 		glEnd()
-		glColor3ub(0,0,64)
-		for(i in topLine..bottomLine) {
+		glColor4ub(0,0,64,255)
+		for(i in topLine..bottomLine + 1) {
 			number: Char[4]
 			sprintf(number,"%d",i)
 			renderFont(1,12,0.2,1,number)
@@ -165,23 +160,48 @@ TextContent: class extends Widget {
 	
 	cacheLines: func() {
 		cachedLines clear()
+		character: Char[2]
+		character[1] = '\0'
 		for(line in lines) {
-
-			dlist : GLuint = glGenLists(1)
-			glNewList(dlist, GL_COMPILE)
-			glPushMatrix()
-			for(i2 in 0..line length()) {
-				if(line[i2] == '\t') {
-					glTranslated(fontWidth*4,0,0)
-				} else if(line[i2] == ' '){
-					glTranslated(fontWidth,0,0)
-				}else {
-					character[0] = line[i2]
-					renderFont(4,12,0.2,1,line[i2])
-					glTranslated(fontWidth,0,0)
+			lineSize := 0
+			for(i in 0..line length()) {
+				if(line[i] == '\t') {
+					lineSize += 4
+				} else {
+					lineSize += 1
 				}
 			}
-			glPopMatrix()
+			
+			rline := String new(lineSize)
+			i2 := 0
+			for(i in 0..line length()) {
+				if(line[i] == '\t') {
+					for(n in 0..4) {
+						rline[i2] = ' '
+						i2 += 1
+					}
+				} else {
+					rline[i2] = line[i]
+					i2 += 1
+				}
+			}
+			
+			dlist : GLuint = glGenLists(1)
+			glNewList(dlist, GL_COMPILE)
+			/*glPushMatrix()
+			for(i2 in 0..line length()) {
+				if(line[i2] == '\t') {
+					glTranslated((fontWidth + 1)*4,0,0)
+				} else if(line[i2] == ' '){
+					glTranslated(fontWidth + 1,0,0)
+				}else {
+					character[0] = line[i2]
+					renderFont(4,12,0.2,1,character )
+					glTranslated(fontWidth + 1,0,0)
+				}
+			}
+			glPopMatrix()*/
+			renderFont(4,12,0.2,1,rline)
 			glEndList()
 		
 			cachedLines add(dlist)
@@ -191,7 +211,7 @@ TextContent: class extends Widget {
 	//functions that draws the line highlighting
 	highDraw: func {
 		glPushMatrix()
-		glColor3ub(200,200,250)
+		glColor4ub(200,200,250,255)
 		glBegin(GL_QUADS)
 		glVertex2i(0,0)
 		glVertex2i(size x,0)
@@ -202,7 +222,7 @@ TextContent: class extends Widget {
 	}
 	
 	bgDraw: func {
-		glColor3ub(bgColor x, bgColor y, bgColor z)
+		glColor4ub(bgColor x, bgColor y, bgColor z,255)
 		glBegin(GL_QUADS)
 		glVertex2i(0,0)
 		glVertex2i(0,size y)
@@ -236,6 +256,7 @@ TextContent: class extends Widget {
 	}
 	
 	handleEvent: func(e: Event) {
+		state := SDL getModState()
 		match( e type ) {
 			case SDL_KEYDOWN => {
 				match(e key keysym sym) {
@@ -251,20 +272,24 @@ TextContent: class extends Widget {
 						currentLine += 1
 						if(currentLine > lines lastIndex())
 							currentLine = lines lastIndex()
-						//printf("currentLine: %d\n",currentLine)
+						printf("currentLine: %d\n",currentLine)
 						dirty = true
 					}
 					case SDLK_PAGEUP => {
-						topLine -= visibleLines
-						if(topLine < 0)
-							topLine = 0
-						dirty = true
+						if(!(state & KMOD_LCTRL || state & KMOD_RCTRL)) {
+							topLine -= visibleLines
+							if(topLine < 0)
+								topLine = 0
+							dirty = true
+						}
 					}
 					case SDLK_PAGEDOWN => {
-						topLine += visibleLines
-						if(topLine > lines lastIndex())
-							topLine = lines lastIndex()
-						dirty = true
+						if(!(state & KMOD_LCTRL || state & KMOD_RCTRL)) {
+							topLine += visibleLines
+							if(topLine > lines lastIndex())
+								topLine = lines lastIndex()
+							dirty = true
+						}
 					}
 				}
 			}
