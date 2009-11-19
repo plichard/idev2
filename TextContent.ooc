@@ -74,6 +74,12 @@ TextContent: class extends Widget {
 		scrollBar render()
 	}
 	
+	textToPixel: func(x,y: Int) -> Vector2i {
+		return Vector2i new(fSpace*(x as Double) + lineMargin + numbersWidth * 10,
+							lineSpacing * y)
+	}
+	
+	
 	drawCachedText: func {
 		glPushMatrix()
 		glTranslated(numbersWidth * 10,0,0)

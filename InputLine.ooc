@@ -20,7 +20,6 @@ InputLine: class extends Widget {
 		super()
 		pos = parent cpos
 		size = parent csize
-		printf("inputLine got this pos: %d,%d\n",pos x, pos y)
 	}
 	_render: func {
 		bgDraw()
