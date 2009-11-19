@@ -49,7 +49,7 @@ Widget: abstract class {
 	
 	_render: abstract func()
 	
-	//resizes a widget with a beautiful animation =), fill flag will be turned off
+	//resizes a widget with a beautiful animation =), /!\ fill flag will be turned off /!\
 	dynResize: func(x,y: Int) {
 		fill = false
 		/// TODO implement it dang it!
