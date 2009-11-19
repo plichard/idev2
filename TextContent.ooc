@@ -151,7 +151,7 @@ TextContent: class extends Widget {
 		glEnd()
 		glColor4ub(0,0,64,255)
 		for(i in topLine..bottomLine + 1) {
-			printf("drawing line numbers: [%d..%d]\n",topLine, bottomLine + 1)
+			//printf("drawing line numbers: [%d..%d]\n",topLine, bottomLine + 1)
 			number: Char[4]
 			sprintf(number,"%d",i)
 			renderFont(1,12,0.2,1,number)
@@ -256,8 +256,67 @@ TextContent: class extends Widget {
 		cacheLines()
         printf("Finished loading %s (%d lines total)\n", file, lines size())
 	}
-	handleKeyboardEvent: func (e: Event){}
-	handleMouseEvent: func (e: Event){}
+	handleKeyboardEvent: func (e: Event){
+		state := SDL getModState()
+		match( e type ) {
+			case SDL_KEYDOWN => {
+				match(e key keysym sym) {
+					case SDLK_UP => {
+						currentLine -= 1
+						if(currentLine < 0)
+							currentLine = 0
+						//printf("currentLine: %d\n",currentLine)
+						dirty = true
+					}
+					
+					case SDLK_DOWN => {
+						currentLine += 1
+						if(currentLine > lines lastIndex())
+							currentLine = lines lastIndex()
+						//printf("currentLine: %d\n",currentLine)
+						dirty = true
+					}
+					case SDLK_PAGEUP => {
+						if(!(state & KMOD_LCTRL || state & KMOD_RCTRL)) {
+							topLine -= visibleLines
+							if(topLine < 0)
+								topLine = 0
+							dirty = true
+						}
+					}
+					case SDLK_PAGEDOWN => {
+						if(!(state & KMOD_LCTRL || state & KMOD_RCTRL)) {
+							topLine += visibleLines
+							if(topLine > lines lastIndex())
+								topLine = lines lastIndex()
+							dirty = true
+						}
+					}
+				}
+			}
+		}
+	}
+	handleMouseEvent: func (e: Event){
+		match( e type ) {
+			case SDL_MOUSEBUTTONUP => {
+				if (e button button == SDL_BUTTON_WHEELUP && lines size() > 0) {
+					topLine -= 4
+					if(topLine < 0) {
+						topLine = 0
+					}
+					dirty = true
+				}
+				else if (e button button == SDL_BUTTON_WHEELDOWN && lines size() > 0) {
+					topLine += 4
+					if(topLine > lines lastIndex()) {
+						topLine = lines lastIndex()
+					}
+					dirty = true
+				}
+				
+			}
+		}
+	}
 	
 	handleEvent: func(e: Event) {
 		state := SDL getModState()
@@ -276,7 +335,7 @@ TextContent: class extends Widget {
 						currentLine += 1
 						if(currentLine > lines lastIndex())
 							currentLine = lines lastIndex()
-						printf("currentLine: %d\n",currentLine)
+						//printf("currentLine: %d\n",currentLine)
 						dirty = true
 					}
 					case SDLK_PAGEUP => {

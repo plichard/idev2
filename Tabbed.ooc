@@ -146,11 +146,15 @@ Tabbed: class extends Widget {
 					else if (e button button == SDL_BUTTON_WHEELDOWN && tabsHovered) {
 						focus += 1; focus > tabs lastIndex()? focus = 0:0
 						dirty = true
+					} else {
+						if(focus >= 0) {
+							tabs get(focus) handleMouseEvent(e)
+						}
 					}
 				}
 			}
 			if(focus >= 0) {
-				tabs get(focus) handleEvent(e)
+				tabs get(focus) handleKeyboardEvent(e)
 			}
 		}
 		dialog handleEvent(e)

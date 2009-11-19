@@ -62,7 +62,7 @@ Widget: abstract class {
 		if(_show ) {
 			glPushMatrix()
 			if(modal) {
-				printf("step: %1.0f\n",step)
+				//printf("step: %1.0f\n",step)
 				if(step > 0) {
 					glColor4d(0,0,0,(nstep - step)/nstep / 2.0 )
 				} else if(step < 0) {
