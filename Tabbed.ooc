@@ -151,7 +151,11 @@ Tabbed: class extends Widget {
 					}
 				}
 				case SDL_MOUSEMOTION => {
-					hoverTab(e motion x, e motion y)
+					if(!hoverTab(e motion x, e motion y)) {
+						if(focus >= 0) {
+							tabs get(focus) handleMouseEvent(e)
+						}
+					}
 				}
 				case SDL_MOUSEBUTTONUP => {
 					if(hoveredTab > -1  && e button button == SDL_BUTTON_LEFT) {
@@ -179,7 +183,7 @@ Tabbed: class extends Widget {
 		//printf("dialog show: %d\n",dialog _show)
 	}
 	
-	hoverTab: func(x,y: Int) {
+	hoverTab: func(x,y: Int) -> Bool {
 		absPos := getAbsPos()
 		hoveredTab = -1
 		tabsHovered = false
@@ -199,9 +203,12 @@ Tabbed: class extends Widget {
 				tabx += tabWidth + 1
 				tabn += 1
 			}
-		}
-		if(hoveredTab == -1) {
-			dirty = true
+			if(hoveredTab == -1) {
+				dirty = true
+			}
+			return true
+		} else {
+			return false
 		}
 	}
 	

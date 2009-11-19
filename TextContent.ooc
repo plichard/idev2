@@ -21,9 +21,13 @@ TextContent: class extends Widget {
 	bottomLine := 0
 	visibleLines := 0
 	currentLine := 0		//index of the line containing the cursor, so we can highlight it
+	currentColumn := 0
+	hoveredLine := 0
+	hoveredColumn := 0
 	numbersWidth := 0
 	lineSpacing := 17
 	scrollWidth := 20
+	lineMargin := 4
 	fontWidth := 0.0
 	file := "Tabbed.ooc"
 	scrollBar := ScrollBar new(this)	
@@ -89,6 +93,10 @@ TextContent: class extends Widget {
 			if(nline == currentLine) {
 				highDraw()
 			}
+			
+			if(nline == hoveredLine) {
+				highDraw()
+			}
 			glColor4ub(0,0,0,255)
 			glCallList(line)
 			glTranslated(0,lineSpacing,0)
@@ -96,6 +104,10 @@ TextContent: class extends Widget {
 			i+=1
 		}
 		glPopMatrix()
+		
+		glColor4ub(200,200,255,128)
+		fSpace := getFontSpacing()
+		drawQuad(fSpace*(hoveredColumn as Double) + lineMargin + numbersWidth * 10,0, 1, size y)
 	}
 	
 	drawText: func {
@@ -203,7 +215,7 @@ TextContent: class extends Widget {
 				}
 			}
 			glPopMatrix()*/
-			renderFont(4,12,0.2,1,rline)
+			renderFont(lineMargin,12,0.2,1,rline)
 			glEndList()
 		
 			cachedLines add(dlist)
@@ -256,6 +268,7 @@ TextContent: class extends Widget {
 		cacheLines()
         printf("Finished loading %s (%d lines total)\n", file, lines size())
 	}
+	
 	handleKeyboardEvent: func (e: Event){
 		state := SDL getModState()
 		match( e type ) {
@@ -265,6 +278,10 @@ TextContent: class extends Widget {
 						currentLine -= 1
 						if(currentLine < 0)
 							currentLine = 0
+							
+						if(currentLine  < topLine) {
+							topLine = currentLine
+						}
 						//printf("currentLine: %d\n",currentLine)
 						dirty = true
 					}
@@ -273,6 +290,11 @@ TextContent: class extends Widget {
 						currentLine += 1
 						if(currentLine > lines lastIndex())
 							currentLine = lines lastIndex()
+							
+						if(currentLine + 1> bottomLine) {
+							bottomLine = currentLine
+							topLine = bottomLine - visibleLines + 1
+						}
 						//printf("currentLine: %d\n",currentLine)
 						dirty = true
 					}
@@ -296,10 +318,14 @@ TextContent: class extends Widget {
 			}
 		}
 	}
+	
 	handleMouseEvent: func (e: Event){
 		match( e type ) {
 			case SDL_MOUSEBUTTONUP => {
-				if (e button button == SDL_BUTTON_WHEELUP && lines size() > 0) {
+				if(e button button == SDL_BUTTON_LEFT) {
+					currentLine = hoveredLine
+					dirty = true
+				} else if (e button button == SDL_BUTTON_WHEELUP && lines size() > 0) {
 					topLine -= 4
 					if(topLine < 0) {
 						topLine = 0
@@ -315,7 +341,17 @@ TextContent: class extends Widget {
 				}
 				
 			}
+			case SDL_MOUSEMOTION => {
+				hoverLine(e motion x, e motion y)
+			}
 		}
+	}
+	
+	hoverLine: func(x,y: Int) {
+		pos := getAbsPos()
+		hoveredLine = (y - pos x)/lineSpacing + topLine - 1
+		hoveredColumn = round((x - pos x - lineMargin - numbersWidth * 10) / getFontSpacing())
+		dirty = true
 	}
 	
 	handleEvent: func(e: Event) {
@@ -357,7 +393,10 @@ TextContent: class extends Widget {
 				}
 			}
 			case SDL_MOUSEBUTTONUP => {
-				if (e button button == SDL_BUTTON_WHEELUP && lines size() > 0) {
+				if(e button button == SDL_BUTTON_LEFT) {
+					currentLine = hoveredLine
+					dirty = true
+				} else if (e button button == SDL_BUTTON_WHEELUP && lines size() > 0) {
 					topLine -= 4
 					if(topLine < 0) {
 						topLine = 0
@@ -369,6 +408,13 @@ TextContent: class extends Widget {
 					if(topLine > lines lastIndex()) {
 						topLine = lines lastIndex()
 					}
+					dirty = true
+				}
+			}
+			
+			case SDL_MOUSEBUTTONDOWN => {
+				if(e button button == SDL_BUTTON_LEFT) {
+					currentLine = hoveredLine
 					dirty = true
 				}
 			}

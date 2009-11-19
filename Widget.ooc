@@ -4,6 +4,8 @@ import Vector
 
 include ./font/font
 initFont: extern func(...)
+getFont: extern func(...) -> Pointer
+ftglGetFontBBox: extern func(...)
 
 NORMAL_HIDE := 0
 NE_HIDE := 1
@@ -56,6 +58,18 @@ Widget: abstract class {
 		
 		dirty = true
 		keepDirty = true
+	}
+	
+	getFontWidth: func -> Double {
+		bbox : Float[6]
+		ftglGetFontBBox (getFont(), "8", 1, bbox)
+		return bbox[3]/5.0
+	}
+	
+	getFontSpacing: func -> Double {
+		bbox : Float[6]
+		ftglGetFontBBox (getFont(), "8" * 80, 80, bbox)
+		return bbox[3]/5.0/80.0
 	}
 	
 	render: func {
